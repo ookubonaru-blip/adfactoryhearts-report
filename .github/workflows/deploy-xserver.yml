@@ -1,8 +1,6 @@
-name: Deploy to Xserver
-
-on:
-  push:
-    branches:
+name: Deploy to Xserver                                                                                                                                                   
+on:                                                                                                                                                                        push:
+    branches:                                                                                                                                                          
       - main
 
 jobs:
@@ -21,7 +19,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./
-          server-dir: /adfactoryhearts.com/public_html/reports.adfactoryhearts.com/
+          server-dir: /adfactoryhearts/instagram/
           exclude: |
             **/.git*
             **/.git*/**
