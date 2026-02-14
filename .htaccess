@@ -1,4 +1,0 @@
-AuthType Basic
-AuthName "Report Access"
-AuthUserFile /home/XSERVER_USER/reports.adfactoryhearts.com/public_html/.htpasswd
-Require valid-user
