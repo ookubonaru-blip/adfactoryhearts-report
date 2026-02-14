@@ -21,7 +21,7 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           protocol: ftps
           local-dir: ./
-          server-dir: /reports.adfactoryhearts.com/public_html/
+          server-dir: /adfactoryhearts.com/public_html/reports.adfactoryhearts.com/
           exclude: |
             **/.git*
             **/.git*/**
