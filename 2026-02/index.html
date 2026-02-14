@@ -166,6 +166,10 @@
             overflow-x: auto;
             -webkit-overflow-scrolling: touch;
         }
+        .chart-scroll-wrapper {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
         @media (max-width: 600px) {
             body {
                 padding: 0 10px 30px;
@@ -203,6 +207,9 @@
             .metric-value { font-size: 1.3em; }
             .metric-label { font-size: 0.75em; }
             .chart-container { min-height: 280px; }
+            .chart-wide {
+                min-width: 700px;
+            }
             th, td {
                 padding: 8px 6px;
                 font-size: 0.85em;
@@ -237,7 +244,7 @@
 
 <div class="header">
     <h1>Instagram インサイトレポート</h1>
-    <p class="timestamp">生成日時: 2026-02-15T00:16:20.190970</p>
+    <p class="timestamp">生成日時: 2026-02-15T00:20:11.782086</p>
 </div>
 
 <!-- アカウント概要 -->
@@ -297,7 +304,7 @@
 <div class="card" id="section-heatmap">
     <h2>投稿時間帯ヒートマップ</h2>
     <p style="color:#8e8e8e;font-size:0.9em;">曜日と時間帯ごとの平均<span class="term">エンゲージメント率<span class="tip">（いいね＋コメント＋保存）÷ リーチ × 100。</span></span>を色で表示。赤いほど反応が良い時間帯です。</p>
-    <div class="chart-container" id="chart-heatmap"></div>
+    <div class="chart-scroll-wrapper"><div class="chart-container chart-wide" id="chart-heatmap"></div></div>
 </div>
 
 
@@ -306,7 +313,7 @@
 <div class="card" id="section-scatter">
     <h2><span class="term">リーチ<span class="tip">投稿を見たユニークユーザー数。</span></span> vs <span class="term">エンゲージメント率<span class="tip">（いいね＋コメント＋保存）÷ リーチ × 100。</span></span></h2>
     <p style="color:#8e8e8e;font-size:0.9em;">各投稿をバブルで表示。右上ほど「多くの人に見られ、かつ反応も良い」投稿です。バブルのサイズは総エンゲージメント数を表します。</p>
-    <div class="chart-container" id="chart-scatter"></div>
+    <div class="chart-scroll-wrapper"><div class="chart-container chart-wide" id="chart-scatter"></div></div>
 </div>
 
 
