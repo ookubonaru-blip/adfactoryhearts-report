@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Instagram 期間比較レポート — 2025年7月〜9月 vs 2025年11月〜2026年1月</title>
+    <title>Instagram インサイトレポート</title>
     <script src="https://cdn.plot.ly/plotly-2.35.0.min.js" charset="utf-8"></script>
     <style>
         * { box-sizing: border-box; }
@@ -16,75 +16,152 @@
             color: #262626;
         }
         .navbar {
-            position: sticky; top: 0; z-index: 100;
+            position: sticky;
+            top: 0;
+            z-index: 100;
             background: rgba(255,255,255,0.95);
             backdrop-filter: blur(8px);
             border-bottom: 1px solid #dbdbdb;
-            padding: 10px 0; margin: 0 -20px 20px;
-            padding-left: 20px; padding-right: 20px;
-            display: flex; flex-wrap: wrap; gap: 8px;
+            padding: 10px 0;
+            margin: 0 -20px 20px;
+            padding-left: 20px;
+            padding-right: 20px;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
         }
         .navbar a {
-            color: #262626; text-decoration: none;
-            padding: 6px 14px; border-radius: 20px;
-            font-size: 0.85em; background: #f0f0f0;
-            transition: background 0.2s, color 0.2s; white-space: nowrap;
+            color: #262626;
+            text-decoration: none;
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            background: #f0f0f0;
+            transition: background 0.2s, color 0.2s;
+            white-space: nowrap;
         }
         .navbar a:hover {
-            background: linear-gradient(45deg, #f09433, #dc2743); color: white;
+            background: linear-gradient(45deg, #f09433, #dc2743);
+            color: white;
         }
         .header {
             background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-            color: white; padding: 30px; border-radius: 10px; margin-bottom: 20px;
+            color: white;
+            padding: 30px;
+            border-radius: 10px;
+            margin-bottom: 20px;
         }
         .header h1 { margin: 0; font-size: 1.6em; }
         .header .timestamp { color: rgba(255,255,255,0.85); font-size: 0.9em; }
         .card {
-            background: white; border-radius: 10px; padding: 20px;
-            margin-bottom: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
         }
         .card h2 {
-            color: #262626; border-bottom: 2px solid #dbdbdb;
-            padding-bottom: 10px; margin-top: 0; font-size: 1.2em;
+            color: #262626;
+            border-bottom: 2px solid #dbdbdb;
+            padding-bottom: 10px;
+            margin-top: 0;
+            font-size: 1.2em;
         }
         .metrics {
-            display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 15px;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 15px;
         }
         .metric {
-            background: #f5f5f5; padding: 15px; border-radius: 8px; text-align: center;
+            background: #f5f5f5;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
         }
         .metric-value {
-            font-size: 1.8em; font-weight: bold; color: #0095f6;
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #0095f6;
         }
         .metric-label {
-            color: #8e8e8e; font-size: 0.85em; margin-top: 4px;
+            color: #8e8e8e;
+            font-size: 0.85em;
+            margin-top: 4px;
         }
-        .chart-container { min-height: 400px; margin: 10px 0; }
-        table { width: 100%; border-collapse: collapse; }
-        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #dbdbdb; }
-        th { background: #fafafa; font-weight: 600; }
+        .chart-container {
+            min-height: 400px;
+            margin: 10px 0;
+        }
+        .recommendations {
+            background: #fff3cd;
+            border-left: 4px solid #ffc107;
+            padding: 15px;
+            margin: 10px 0;
+            border-radius: 0 6px 6px 0;
+        }
+        /* ツールチップ */
         .term {
-            border-bottom: 1px dotted #0095f6; cursor: help;
-            position: relative; color: #0095f6;
+            border-bottom: 1px dotted #0095f6;
+            cursor: help;
+            position: relative;
+            color: #0095f6;
         }
         .term .tip {
-            visibility: hidden; opacity: 0; position: absolute;
-            bottom: 125%; left: 50%; transform: translateX(-50%);
-            background: #262626; color: #fff; padding: 8px 12px;
-            border-radius: 6px; font-size: 0.8em; width: 250px;
-            text-align: left; z-index: 200; transition: opacity 0.2s;
-            pointer-events: none; line-height: 1.4;
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: 125%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #262626;
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 0.8em;
+            width: 250px;
+            text-align: left;
+            z-index: 200;
+            transition: opacity 0.2s;
+            pointer-events: none;
+            line-height: 1.4;
         }
         .term .tip::after {
-            content: ''; position: absolute; top: 100%; left: 50%;
-            transform: translateX(-50%); border: 6px solid transparent;
+            content: '';
+            position: absolute;
+            top: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            border: 6px solid transparent;
             border-top-color: #262626;
         }
         .term:hover .tip { visibility: visible; opacity: 1; }
-        .glossary-item { border-bottom: 1px solid #eee; }
-        .glossary-item summary { padding: 12px 0; cursor: pointer; font-weight: 600; color: #262626; }
+        /* 用語集アコーディオン */
+        .glossary-item {
+            border-bottom: 1px solid #eee;
+        }
+        .glossary-item summary {
+            padding: 12px 0;
+            cursor: pointer;
+            font-weight: 600;
+            color: #262626;
+        }
         .glossary-item summary:hover { color: #dc2743; }
-        .glossary-item p { margin: 0 0 12px 0; padding-left: 16px; color: #555; line-height: 1.6; }
+        .glossary-item p {
+            margin: 0 0 12px 0;
+            padding-left: 16px;
+            color: #555;
+            line-height: 1.6;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #dbdbdb;
+        }
+        th { background: #fafafa; font-weight: 600; }
         @media (max-width: 600px) {
             .metric-value { font-size: 1.4em; }
             .chart-container { min-height: 300px; }
@@ -93,194 +170,109 @@
 </head>
 <body>
 
-<div class="navbar"><a href="#section-overview">期間概要</a>
-<a href="#section-kpi">主要指標</a>
-<a href="#section-media-compare">メディアタイプ</a>
-<a href="#section-category-compare">カテゴリ</a>
-<a href="#section-timing-compare">投稿タイミング</a>
-<a href="#section-top-a">期間Aトップ</a>
-<a href="#section-top-b">期間Bトップ</a>
+<div class="navbar">
+    <a href="#section-account">アカウント</a>
+<a href="#section-posts">投稿</a>
+<a href="#section-media-type">メディアタイプ</a>
+<a href="#section-heatmap">投稿時間</a>
+<a href="#section-scatter">リーチ分析</a>
+<a href="#section-timeline">推移</a>
 <a href="#section-persona">ペルソナ</a>
-<a href="#section-proposals">施策提案</a>
-<a href="#section-glossary">用語集</a></div>
+<a href="#section-analyst">分析レポート</a>
+<a href="#section-recommendations">推奨</a>
+<a href="#section-glossary">用語集</a>
+</div>
 
 <div class="header">
-    <h1>Instagram 期間比較レポート</h1>
-    <p class="timestamp">2025年7月〜9月 vs 2025年11月〜2026年1月 | 生成日時: 2026-02-14T13:59:26.736897</p>
+    <h1>Instagram インサイトレポート</h1>
+    <p class="timestamp">生成日時: 2026-02-14T23:51:19.326434</p>
 </div>
 
-
-<div class="card" id="section-overview">
-    <h2>期間概要</h2>
+<!-- アカウント概要 -->
+<div class="card" id="section-account">
+    <h2>アカウント概要</h2>
     <div class="metrics">
-        <div class="metric" style="background:#fff5f0;">
-            <div class="metric-label" style="font-weight:bold;color:#e6683c;">期間A: 2025年7月〜9月</div>
-            <div class="metric-value">6</div>
-            <div class="metric-label">投稿数</div>
+        <div class="metric">
+            <div class="metric-value">1,619</div>
+            <div class="metric-label">フォロワー</div>
         </div>
-        <div class="metric" style="background:#f0f0ff;">
-            <div class="metric-label" style="font-weight:bold;color:#5856d6;">期間B: 2025年11月〜2026年1月</div>
-            <div class="metric-value">0</div>
-            <div class="metric-label">投稿数</div>
+        <div class="metric">
+            <div class="metric-value">1,508</div>
+            <div class="metric-label">フォロー中</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">492</div>
+            <div class="metric-label">総投稿数</div>
         </div>
     </div>
 </div>
 
-<div class="card" id="section-kpi">
-    <h2>主要指標比較</h2>
-    <table>
-        <thead><tr>
-            <th>指標</th>
-            <th>2025年7月〜9月</th>
-            <th>2025年11月〜2026年1月</th>
-            <th>変化</th>
-        </tr></thead>
-        <tbody><tr><td>投稿数</td><td>6.00</td><td>0.00</td><td style="color:#dc3545;font-weight:bold;"><span style="color:#dc3545;font-weight:bold;">&#9660;</span> -6.00 (-100.0%)</td></tr>
-<tr><td>平均エンゲージメント率 (%)</td><td>4.17</td><td>0.00</td><td style="color:#dc3545;font-weight:bold;"><span style="color:#dc3545;font-weight:bold;">&#9660;</span> -4.17 (-100.0%)</td></tr>
-<tr><td>平均いいね</td><td>17.17</td><td>0.00</td><td style="color:#dc3545;font-weight:bold;"><span style="color:#dc3545;font-weight:bold;">&#9660;</span> -17.17 (-100.0%)</td></tr>
-<tr><td>平均リーチ</td><td>247.00</td><td>0.00</td><td style="color:#dc3545;font-weight:bold;"><span style="color:#dc3545;font-weight:bold;">&#9660;</span> -247.00 (-100.0%)</td></tr>
-<tr><td>平均コメント</td><td>0.00</td><td>0.00</td><td style="color:#8e8e8e;font-weight:bold;"><span style="color:#8e8e8e;">&#9644;</span> 0.00 (0.0%)</td></tr>
-<tr><td>平均保存数</td><td>0.33</td><td>0.00</td><td style="color:#dc3545;font-weight:bold;"><span style="color:#dc3545;font-weight:bold;">&#9660;</span> -0.33 (-100.0%)</td></tr>
-</tbody>
-    </table>
-    <div class="chart-container" id="chart-kpi-bar"></div>
+<!-- 投稿パフォーマンス -->
+
+<div class="card" id="section-posts">
+    <h2>投稿パフォーマンス</h2>
+    <div class="metrics">
+        <div class="metric">
+            <div class="metric-value">31.9</div>
+            <div class="metric-label">平均いいね</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">0.2</div>
+            <div class="metric-label">平均コメント</div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">351</div>
+            <div class="metric-label">平均<span class="term">リーチ<span class="tip">投稿を見たユニークユーザー数。同じ人が何回見ても1回とカウントされます。</span></span></div>
+        </div>
+        <div class="metric">
+            <div class="metric-value">17.64%</div>
+            <div class="metric-label">平均<span class="term">エンゲージメント率<span class="tip">（いいね＋コメント＋保存）÷ リーチ × 100。投稿がどれだけ反応を得たかの指標です。</span></span></div>
+        </div>
+    </div>
 </div>
 
-<div class="card" id="section-media-compare">
-    <h2>メディアタイプ別比較</h2>
-    <table>
-        <thead><tr>
-            <th>タイプ</th>
-            <th>投稿数 (2025年7月〜9月)</th>
-            <th>投稿数 (2025年11月〜2026年1月)</th>
-            <th>エンゲージメント率 (2025年7月〜9月)</th>
-            <th>エンゲージメント率 (2025年11月〜2026年1月)</th>
-            <th>変化</th>
-        </tr></thead>
-        <tbody><tr><td><strong>CAROUSEL_ALBUM</strong></td><td>1</td><td>0</td><td>0.00%</td><td>0.00%</td><td style="color:#8e8e8e;font-weight:bold;"><span style="color:#8e8e8e;">&#9644;</span> 0.00 (0.0%)</td></tr>
-<tr><td><strong>VIDEO</strong></td><td>5</td><td>0</td><td>5.00%</td><td>0.00%</td><td style="color:#dc3545;font-weight:bold;"><span style="color:#dc3545;font-weight:bold;">&#9660;</span> -5.00 (-100.0%)</td></tr>
-</tbody>
-    </table>
-    <div class="chart-container" id="chart-media-compare"></div>
+
+<!-- メディアタイプ別 -->
+
+<div class="card" id="section-media-type">
+    <h2>メディアタイプ別<span class="term">エンゲージメント率<span class="tip">（いいね＋コメント＋保存）÷ リーチ × 100。投稿がどれだけ反応を得たかの指標です。</span></span></h2>
+    <div class="chart-container" id="chart-media-type"></div>
 </div>
 
-<div class="card" id="section-category-compare">
-    <h2>カテゴリ別比較</h2>
-    <p style="color:#8e8e8e;font-size:0.9em;">キャプション内容から投稿を自動分類し、期間ごとのパフォーマンスを比較。</p>
-    <table>
-        <thead><tr>
-            <th>カテゴリ</th>
-            <th>投稿数 (2025年7月〜9月)</th>
-            <th>投稿数 (2025年11月〜2026年1月)</th>
-            <th>平均エンゲージメント率 (2025年7月〜9月)</th>
-            <th>平均エンゲージメント率 (2025年11月〜2026年1月)</th>
-            <th>変化</th>
-        </tr></thead>
-        <tbody><tr><td><strong>イベント告知</strong></td><td>1</td><td>0</td><td>6.09%</td><td>0.00%</td><td style="color:#dc3545;font-weight:bold;"><span style="color:#dc3545;font-weight:bold;">&#9660;</span> -6.09 (-100.0%)</td></tr>
-<tr><td><strong>制作実績</strong></td><td>5</td><td>0</td><td>3.79%</td><td>0.00%</td><td style="color:#dc3545;font-weight:bold;"><span style="color:#dc3545;font-weight:bold;">&#9660;</span> -3.79 (-100.0%)</td></tr>
-</tbody>
-    </table>
+
+<!-- 投稿時間ヒートマップ -->
+
+<div class="card" id="section-heatmap">
+    <h2>投稿時間帯ヒートマップ</h2>
+    <p style="color:#8e8e8e;font-size:0.9em;">曜日と時間帯ごとの平均<span class="term">エンゲージメント率<span class="tip">（いいね＋コメント＋保存）÷ リーチ × 100。</span></span>を色で表示。赤いほど反応が良い時間帯です。</p>
+    <div class="chart-container" id="chart-heatmap"></div>
 </div>
 
-<div class="card" id="section-timing-compare">
-    <h2>投稿タイミング比較</h2>
-    <h3>曜日別エンゲージメント率</h3>
-    <table>
-        <thead><tr>
-            <th>曜日</th>
-            <th>2025年7月〜9月</th>
-            <th>2025年11月〜2026年1月</th>
-            <th>変化</th>
-        </tr></thead>
-        <tbody><tr><td>月曜</td><td>2.86%</td><td>0.00%</td><td style="color:#dc3545;font-weight:bold;"><span style="color:#dc3545;font-weight:bold;">&#9660;</span> -2.86 (-100.0%)</td></tr>
-<tr><td>火曜</td><td>2.40%</td><td>0.00%</td><td style="color:#dc3545;font-weight:bold;"><span style="color:#dc3545;font-weight:bold;">&#9660;</span> -2.40 (-100.0%)</td></tr>
-<tr><td>水曜</td><td>6.38%</td><td>0.00%</td><td style="color:#dc3545;font-weight:bold;"><span style="color:#dc3545;font-weight:bold;">&#9660;</span> -6.38 (-100.0%)</td></tr>
-<tr><td>木曜</td><td>0.00%</td><td>0.00%</td><td style="color:#8e8e8e;font-weight:bold;"><span style="color:#8e8e8e;">&#9644;</span> 0.00 (0.0%)</td></tr>
-<tr><td>金曜</td><td>5.49%</td><td>0.00%</td><td style="color:#dc3545;font-weight:bold;"><span style="color:#dc3545;font-weight:bold;">&#9660;</span> -5.49 (-100.0%)</td></tr>
-<tr><td>土曜</td><td>0.00%</td><td>0.00%</td><td style="color:#8e8e8e;font-weight:bold;"><span style="color:#8e8e8e;">&#9644;</span> 0.00 (0.0%)</td></tr>
-<tr><td>日曜</td><td>0.00%</td><td>0.00%</td><td style="color:#8e8e8e;font-weight:bold;"><span style="color:#8e8e8e;">&#9644;</span> 0.00 (0.0%)</td></tr>
-</tbody>
-    </table>
-</div>
-<div class="card" id="section-top-a">
-<h2>期間A (2025年7月〜9月) トップ投稿</h2>
 
-<div style="border-left:4px solid #28a745;padding:12px 16px;margin:10px 0;background:#f8fff8;border-radius:0 6px 6px 0;">
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
-        <strong>#1 _  デザイン業界にどっぷりハマって20年。 未だに「やりたいこと」が尽きなくて、飽きない（商い）毎日です。  広告は見</strong>
-        <span style="font-size:0.85em;color:#8e8e8e;">2025/08/06(水) | VIDEO | 制作実績</span>
-    </div>
-    <div style="display:flex;gap:16px;margin:8px 0;flex-wrap:wrap;">
-        <span style="font-weight:bold;color:#dc2743;">エンゲージメント率 6.4%</span>
-        <span>いいね 19</span>
-        <span>保存 0</span>
-        <span>リーチ 298</span>
-        <a href="https://www.instagram.com/reel/DNApAIKTccm/" target="_blank" style="color:#0095f6;text-decoration:none;">投稿を見る</a>
-    </div>
-    <p style="margin:4px 0 0;color:#555;font-size:0.9em;">保存0件（見返したいと思われていない）。</p>
+<!-- リーチ vs エンゲージメント -->
+
+<div class="card" id="section-scatter">
+    <h2><span class="term">リーチ<span class="tip">投稿を見たユニークユーザー数。</span></span> vs <span class="term">エンゲージメント率<span class="tip">（いいね＋コメント＋保存）÷ リーチ × 100。</span></span></h2>
+    <p style="color:#8e8e8e;font-size:0.9em;">各投稿をバブルで表示。右上ほど「多くの人に見られ、かつ反応も良い」投稿です。バブルのサイズは総エンゲージメント数を表します。</p>
+    <div class="chart-container" id="chart-scatter"></div>
 </div>
 
-<div style="border-left:4px solid #28a745;padding:12px 16px;margin:10px 0;background:#f8fff8;border-radius:0 6px 6px 0;">
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
-        <strong>#2 榎屋茶房のご紹介✨  🎉現在、榎屋旅館では超お得なキャンペーン実施中！※詳しくはキャンペーン投稿のキャプションをご確認く</strong>
-        <span style="font-size:0.85em;color:#8e8e8e;">2025/07/11(金) | VIDEO | イベント告知</span>
-    </div>
-    <div style="display:flex;gap:16px;margin:8px 0;flex-wrap:wrap;">
-        <span style="font-weight:bold;color:#dc2743;">エンゲージメント率 6.1%</span>
-        <span>いいね 22</span>
-        <span>保存 0</span>
-        <span>リーチ 361</span>
-        <a href="https://www.instagram.com/reel/DL9uVjZzYOR/" target="_blank" style="color:#0095f6;text-decoration:none;">投稿を見る</a>
-    </div>
-    <p style="margin:4px 0 0;color:#555;font-size:0.9em;">保存0件（見返したいと思われていない）。</p>
+
+<!-- エンゲージメント推移 -->
+
+<div class="card" id="section-timeline">
+    <h2>エンゲージメント率の推移</h2>
+    <p style="color:#8e8e8e;font-size:0.9em;">投稿日順にエンゲージメント率をプロット。トレンドの上昇/下降を確認できます。</p>
+    <div class="chart-container" id="chart-timeline"></div>
 </div>
 
-<div style="border-left:4px solid #28a745;padding:12px 16px;margin:10px 0;background:#f8fff8;border-radius:0 6px 6px 0;">
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
-        <strong>#3 _  私は広告デザインの舞台裏側の人間。  舞台裏は実に泥臭く、世間のイメージしている華やかな印象とは程遠いです。  た</strong>
-        <span style="font-size:0.85em;color:#8e8e8e;">2025/08/08(金) | VIDEO | 制作実績</span>
-    </div>
-    <div style="display:flex;gap:16px;margin:8px 0;flex-wrap:wrap;">
-        <span style="font-weight:bold;color:#dc2743;">エンゲージメント率 4.9%</span>
-        <span>いいね 13</span>
-        <span>保存 1</span>
-        <span>リーチ 286</span>
-        <a href="https://www.instagram.com/reel/DNF2gWPTOsS/" target="_blank" style="color:#0095f6;text-decoration:none;">投稿を見る</a>
-    </div>
-    <p style="margin:4px 0 0;color:#555;font-size:0.9em;">平均以下のパフォーマンス。</p>
-</div>
 
-<div style="border-left:4px solid #0095f6;padding:12px 16px;margin:10px 0;background:#f8fff8;border-radius:0 6px 6px 0;">
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
-        <strong>#4 _  転職からデザイン業界へ飛び込んで、あっという間に10年が経ちました。 右も左もわからなかった新人の頃から、先輩たち</strong>
-        <span style="font-size:0.85em;color:#8e8e8e;">2025/08/12(火) | VIDEO | 制作実績</span>
-    </div>
-    <div style="display:flex;gap:16px;margin:8px 0;flex-wrap:wrap;">
-        <span style="font-weight:bold;color:#dc2743;">エンゲージメント率 4.8%</span>
-        <span>いいね 13</span>
-        <span>保存 1</span>
-        <span>リーチ 292</span>
-        <a href="https://www.instagram.com/reel/DNQE5nkzDLf/" target="_blank" style="color:#0095f6;text-decoration:none;">投稿を見る</a>
-    </div>
-    <p style="margin:4px 0 0;color:#555;font-size:0.9em;">平均以下のパフォーマンス。</p>
-</div>
+<!-- ストーリーズ -->
 
-<div style="border-left:4px solid #0095f6;padding:12px 16px;margin:10px 0;background:#f8fff8;border-radius:0 6px 6px 0;">
-    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
-        <strong>#5 _  私は2019年にWeb制作を学び始め、2020年にアドファクトリーハーツへ入社しました。 入社以来、上司や先輩に支</strong>
-        <span style="font-size:0.85em;color:#8e8e8e;">2025/08/18(月) | VIDEO | 制作実績</span>
-    </div>
-    <div style="display:flex;gap:16px;margin:8px 0;flex-wrap:wrap;">
-        <span style="font-weight:bold;color:#dc2743;">エンゲージメント率 2.9%</span>
-        <span>いいね 7</span>
-        <span>保存 0</span>
-        <span>リーチ 245</span>
-        <a href="https://www.instagram.com/reel/DNfjuA0zp26/" target="_blank" style="color:#0095f6;text-decoration:none;">投稿を見る</a>
-    </div>
-    <p style="margin:4px 0 0;color:#555;font-size:0.9em;">いいね7件は平均(17)の半分以下。保存0件（見返したいと思われていない）。</p>
-</div>
-</div>
-<div class="card" id="section-top-b"><h2>期間B (2025年11月〜2026年1月) トップ投稿</h2><p style="color:#8e8e8e;">投稿データがありません。</p></div>
+
+<!-- フォロワー属性 -->
+
+
 
 <div class="card" id="section-persona">
     <h2>ターゲットペルソナ</h2>
@@ -318,42 +310,242 @@
     </div>
 </div>
 
-<div class="card" id="section-proposals">
-<h2>比較に基づく施策提案</h2>
+
+<div class="card" id="section-analyst">
+<h2>プロアナリスト分析レポート</h2>
+<h3 style="color:#28a745;margin-top:20px;">Top 5 高パフォーマンス投稿</h3>
+
+<div style="border-left:4px solid #28a745;padding:12px 16px;margin:10px 0;background:#f8fff8;border-radius:0 6px 6px 0;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+        <strong style="font-size:1.05em;">#1 ▶撮影・編集全てお任せ！  ハーツでは、ドローンやGoPro、小型マイクなど 様々な機材のご用意があります♪  HPやバ</strong>
+        <span style="font-size:0.85em;color:#8e8e8e;">2024/02/19(月) | VIDEO | 制作実績</span>
+    </div>
+    <div style="display:flex;gap:16px;margin:8px 0;flex-wrap:wrap;">
+        <span style="font-weight:bold;color:#dc2743;"><span class="term">エンゲージメント率<span class="tip">（いいね＋コメント＋保存）÷ リーチ × 100。投稿の反応度を示す指標。</span></span> 100.0%</span>
+        <span>いいね 40</span>
+        <span>保存 1</span>
+        <span>リーチ 41</span>
+        <a href="https://www.instagram.com/reel/C3hmNVfL35A/" target="_blank" style="color:#0095f6;text-decoration:none;">投稿を見る</a>
+    </div>
+    <p style="margin:4px 0 0;color:#555;font-size:0.9em;">エンゲージメント率100.0%は平均(17.6%)の5.7倍。保存1件（コンテンツ価値が高い証拠）。制作実績はデザイン会社の最大の訴求力。</p>
+</div>
+
+<div style="border-left:4px solid #28a745;padding:12px 16px;margin:10px 0;background:#f8fff8;border-radius:0 6px 6px 0;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+        <strong style="font-size:1.05em;">#2 ▶VISIT九州様：撮影  こんばんは！ 今回は「VISIT九州」様撮影風景 「ウォーキング編」です！  皆さん、ガイド</strong>
+        <span style="font-size:0.85em;color:#8e8e8e;">2024/02/20(火) | VIDEO | 制作実績</span>
+    </div>
+    <div style="display:flex;gap:16px;margin:8px 0;flex-wrap:wrap;">
+        <span style="font-weight:bold;color:#dc2743;"><span class="term">エンゲージメント率<span class="tip">（いいね＋コメント＋保存）÷ リーチ × 100。投稿の反応度を示す指標。</span></span> 94.3%</span>
+        <span>いいね 33</span>
+        <span>保存 0</span>
+        <span>リーチ 35</span>
+        <a href="https://www.instagram.com/reel/C3kOB1qvyN1/" target="_blank" style="color:#0095f6;text-decoration:none;">投稿を見る</a>
+    </div>
+    <p style="margin:4px 0 0;color:#555;font-size:0.9em;">エンゲージメント率94.3%は平均(17.6%)の5.3倍。制作実績はデザイン会社の最大の訴求力。</p>
+</div>
+
+<div style="border-left:4px solid #28a745;padding:12px 16px;margin:10px 0;background:#f8fff8;border-radius:0 6px 6px 0;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+        <strong style="font-size:1.05em;">#3 ▶️旅くらす様(@tabi_kuras )：パンフレット  「旅くらす」様では、 雨の日でも由布院を楽しめる ワークショ</strong>
+        <span style="font-size:0.85em;color:#8e8e8e;">2024/02/16(金) | CAROUSEL_ALBUM | 制作実績</span>
+    </div>
+    <div style="display:flex;gap:16px;margin:8px 0;flex-wrap:wrap;">
+        <span style="font-weight:bold;color:#dc2743;"><span class="term">エンゲージメント率<span class="tip">（いいね＋コメント＋保存）÷ リーチ × 100。投稿の反応度を示す指標。</span></span> 66.7%</span>
+        <span>いいね 65</span>
+        <span>保存 0</span>
+        <span>リーチ 99</span>
+        <a href="https://www.instagram.com/p/C3Z2k5VLhsE/" target="_blank" style="color:#0095f6;text-decoration:none;">投稿を見る</a>
+    </div>
+    <p style="margin:4px 0 0;color:#555;font-size:0.9em;">エンゲージメント率66.7%は平均(17.6%)の3.8倍。いいね65件は平均(32)の2.0倍。カルーセル形式で成果物を複数枚見せている。制作実績はデザイン会社の最大の訴求力。金曜はエンゲージメントが高い傾向。</p>
+</div>
+
+<div style="border-left:4px solid #0095f6;padding:12px 16px;margin:10px 0;background:#f8fff8;border-radius:0 6px 6px 0;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+        <strong style="font-size:1.05em;">#4 ▶旅くらす様(＠tabi_kuras)：POP  こんばんは！ 今回は由布院でガイドツアー事業をされている 「旅くらす」</strong>
+        <span style="font-size:0.85em;color:#8e8e8e;">2024/02/21(水) | CAROUSEL_ALBUM | 制作実績</span>
+    </div>
+    <div style="display:flex;gap:16px;margin:8px 0;flex-wrap:wrap;">
+        <span style="font-weight:bold;color:#dc2743;"><span class="term">エンゲージメント率<span class="tip">（いいね＋コメント＋保存）÷ リーチ × 100。投稿の反応度を示す指標。</span></span> 40.4%</span>
+        <span>いいね 80</span>
+        <span>保存 1</span>
+        <span>リーチ 203</span>
+        <a href="https://www.instagram.com/p/C3nC13GvSK2/" target="_blank" style="color:#0095f6;text-decoration:none;">投稿を見る</a>
+    </div>
+    <p style="margin:4px 0 0;color:#555;font-size:0.9em;">エンゲージメント率40.4%は平均(17.6%)の2.3倍。いいね80件は平均(32)の2.5倍。保存1件（コンテンツ価値が高い証拠）。カルーセル形式で成果物を複数枚見せている。制作実績はデザイン会社の最大の訴求力。水曜はエンゲージメントが高い傾向。</p>
+</div>
+
+<div style="border-left:4px solid #0095f6;padding:12px 16px;margin:10px 0;background:#f8fff8;border-radius:0 6px 6px 0;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+        <strong style="font-size:1.05em;">#5 ▶︎ デザイナーって実は地味 !?  デザイナーってなんだかかっこいいけど、 実は地味な作業がほとんどだったり…🤔💭  </strong>
+        <span style="font-size:0.85em;color:#8e8e8e;">2024/02/28(水) | VIDEO | 制作実績</span>
+    </div>
+    <div style="display:flex;gap:16px;margin:8px 0;flex-wrap:wrap;">
+        <span style="font-weight:bold;color:#dc2743;"><span class="term">エンゲージメント率<span class="tip">（いいね＋コメント＋保存）÷ リーチ × 100。投稿の反応度を示す指標。</span></span> 39.8%</span>
+        <span>いいね 35</span>
+        <span>保存 0</span>
+        <span>リーチ 88</span>
+        <a href="https://www.instagram.com/reel/C34x7p3r-Sb/" target="_blank" style="color:#0095f6;text-decoration:none;">投稿を見る</a>
+    </div>
+    <p style="margin:4px 0 0;color:#555;font-size:0.9em;">エンゲージメント率39.8%は平均(17.6%)の2.3倍。制作実績はデザイン会社の最大の訴求力。水曜はエンゲージメントが高い傾向。</p>
+</div>
+<h3 style="color:#dc3545;margin-top:30px;">要改善 低パフォーマンス投稿</h3>
+
+<div style="border-left:4px solid #dc3545;padding:12px 16px;margin:10px 0;background:#fff8f8;border-radius:0 6px 6px 0;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+        <strong style="font-size:1.05em;">_  私は2019年にWeb制作を学び始め、2020年にアドファクトリーハーツへ入社しました。 入社以来、上司や先輩に支</strong>
+        <span style="font-size:0.85em;color:#8e8e8e;">2025/08/18(月) | VIDEO | 制作実績</span>
+    </div>
+    <div style="display:flex;gap:16px;margin:8px 0;flex-wrap:wrap;">
+        <span style="font-weight:bold;color:#dc3545;"><span class="term">エンゲージメント率<span class="tip">（いいね＋コメント＋保存）÷ リーチ × 100。投稿の反応度を示す指標。</span></span> 2.9%</span>
+        <span>いいね 7</span>
+        <span>保存 0</span>
+        <span>リーチ 245</span>
+        <a href="https://www.instagram.com/reel/DNfjuA0zp26/" target="_blank" style="color:#0095f6;text-decoration:none;">投稿を見る</a>
+    </div>
+    <p style="margin:4px 0 0;color:#555;font-size:0.9em;">いいね7件は平均(32)の半分以下。保存0件（見返したいと思われていない）。</p>
+</div>
+
+<div style="border-left:4px solid #dc3545;padding:12px 16px;margin:10px 0;background:#fff8f8;border-radius:0 6px 6px 0;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+        <strong style="font-size:1.05em;">▶VISIT九州様×旅くらす様(＠tabi-kuras)：撮影風景  こんばんは！ VISIT九州様×旅くらす様の プレ</strong>
+        <span style="font-size:0.85em;color:#8e8e8e;">2024/03/19(火) | VIDEO | 制作実績</span>
+    </div>
+    <div style="display:flex;gap:16px;margin:8px 0;flex-wrap:wrap;">
+        <span style="font-weight:bold;color:#dc3545;"><span class="term">エンゲージメント率<span class="tip">（いいね＋コメント＋保存）÷ リーチ × 100。投稿の反応度を示す指標。</span></span> 2.9%</span>
+        <span>いいね 38</span>
+        <span>保存 1</span>
+        <span>リーチ 1,328</span>
+        <a href="https://www.instagram.com/reel/C4sTN_Lv4bq/" target="_blank" style="color:#0095f6;text-decoration:none;">投稿を見る</a>
+    </div>
+    <p style="margin:4px 0 0;color:#555;font-size:0.9em;">リーチ1,328と広いがエンゲージメント率 2.9%は低い（バズったが刺さっていない）。</p>
+</div>
+
+<div style="border-left:4px solid #dc3545;padding:12px 16px;margin:10px 0;background:#fff8f8;border-radius:0 6px 6px 0;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+        <strong style="font-size:1.05em;">▶︎ デザイナーのお休みはおしゃれなの？  こんばんは！ デザイナーの休日はこんな感じです☺️  皆さんは 休日はお家派</strong>
+        <span style="font-size:0.85em;color:#8e8e8e;">2024/04/01(月) | VIDEO | 制作実績</span>
+    </div>
+    <div style="display:flex;gap:16px;margin:8px 0;flex-wrap:wrap;">
+        <span style="font-weight:bold;color:#dc3545;"><span class="term">エンゲージメント率<span class="tip">（いいね＋コメント＋保存）÷ リーチ × 100。投稿の反応度を示す指標。</span></span> 3.9%</span>
+        <span>いいね 16</span>
+        <span>保存 0</span>
+        <span>リーチ 406</span>
+        <a href="https://www.instagram.com/reel/C5ODBFLvfOT/" target="_blank" style="color:#0095f6;text-decoration:none;">投稿を見る</a>
+    </div>
+    <p style="margin:4px 0 0;color:#555;font-size:0.9em;">保存0件（見返したいと思われていない）。</p>
+</div>
+
+<div style="border-left:4px solid #dc3545;padding:12px 16px;margin:10px 0;background:#fff8f8;border-radius:0 6px 6px 0;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+        <strong style="font-size:1.05em;">Barjunneバルジュン様 撮影  [所在地] 大分県大分市荷場町6-16スカイメゾン外苑1F tel：097-574</strong>
+        <span style="font-size:0.85em;color:#8e8e8e;">2024/10/05(土) | VIDEO | 制作実績</span>
+    </div>
+    <div style="display:flex;gap:16px;margin:8px 0;flex-wrap:wrap;">
+        <span style="font-weight:bold;color:#dc3545;"><span class="term">エンゲージメント率<span class="tip">（いいね＋コメント＋保存）÷ リーチ × 100。投稿の反応度を示す指標。</span></span> 4.6%</span>
+        <span>いいね 44</span>
+        <span>保存 9</span>
+        <span>リーチ 1,155</span>
+        <a href="https://www.instagram.com/reel/DAvW8pXy-Op/" target="_blank" style="color:#0095f6;text-decoration:none;">投稿を見る</a>
+    </div>
+    <p style="margin:4px 0 0;color:#555;font-size:0.9em;">リーチ1,155と広いがエンゲージメント率 4.6%は低い（バズったが刺さっていない）。</p>
+</div>
+
+<div style="border-left:4px solid #dc3545;padding:12px 16px;margin:10px 0;background:#fff8f8;border-radius:0 6px 6px 0;">
+    <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;">
+        <strong style="font-size:1.05em;">_  転職からデザイン業界へ飛び込んで、あっという間に10年が経ちました。 右も左もわからなかった新人の頃から、先輩たち</strong>
+        <span style="font-size:0.85em;color:#8e8e8e;">2025/08/12(火) | VIDEO | 制作実績</span>
+    </div>
+    <div style="display:flex;gap:16px;margin:8px 0;flex-wrap:wrap;">
+        <span style="font-weight:bold;color:#dc3545;"><span class="term">エンゲージメント率<span class="tip">（いいね＋コメント＋保存）÷ リーチ × 100。投稿の反応度を示す指標。</span></span> 4.8%</span>
+        <span>いいね 13</span>
+        <span>保存 1</span>
+        <span>リーチ 292</span>
+        <a href="https://www.instagram.com/reel/DNQE5nkzDLf/" target="_blank" style="color:#0095f6;text-decoration:none;">投稿を見る</a>
+    </div>
+    <p style="margin:4px 0 0;color:#555;font-size:0.9em;">いいね13件は平均(32)の半分以下。</p>
+</div>
+<h3 style="margin-top:30px;">コンテンツカテゴリ別パフォーマンス</h3>
+<p style="color:#8e8e8e;font-size:0.9em;">キャプション内容から投稿を自動分類し、カテゴリごとの平均値を比較。</p>
+<table><thead><tr><th>カテゴリ</th><th>投稿数</th><th>平均いいね</th><th>平均エンゲージメント率</th><th>平均保存</th><th>平均リーチ</th></tr></thead><tbody>
+<tr><td><strong>制作実績</strong></td><td>28</td><td>32</td><td style="color:#28a745;font-weight:bold;">18.3%</td><td>1</td><td>346</td></tr>
+<tr><td><strong>イベント告知</strong></td><td>2</td><td>32</td><td style="color:#262626;font-weight:bold;">8.5%</td><td>5</td><td>416</td></tr>
+</tbody></table>
+<h3 style="margin-top:30px;">メディアタイプ比較</h3>
+<table><thead><tr><th>タイプ</th><th>投稿数</th><th>平均いいね</th><th>平均エンゲージメント率</th><th>平均リーチ</th></tr></thead><tbody>
+<tr><td><strong>CAROUSEL_ALBUM</strong></td><td>5</td><td>59</td><td style="font-weight:bold;">28.6%</td><td>202</td></tr>
+<tr><td><strong>VIDEO</strong></td><td>25</td><td>26</td><td style="font-weight:bold;">15.4%</td><td>380</td></tr>
+</tbody></table>
+<h3 style="margin-top:30px;">投稿タイミング分析</h3>
+<div class="metrics">
+
+<div class="metric" style="background:#f0fff0;">
+    <div class="metric-value" style="color:#28a745;">月曜</div>
+    <div class="metric-label">最もエンゲージメント率が高い曜日（23.2%）</div>
+</div>
+
+<div class="metric" style="background:#fff0f0;">
+    <div class="metric-value" style="color:#dc3545;">土曜</div>
+    <div class="metric-label">最もエンゲージメント率が低い曜日（4.6%）</div>
+</div>
+
+<div class="metric" style="background:#f0f8ff;">
+    <div class="metric-value" style="color:#0095f6;">9時</div>
+    <div class="metric-label">最もエンゲージメント率が高い時間帯（44.2%）</div>
+</div>
+</div>
+<h3 style="margin-top:30px;">次の1ヶ月で実施すべき施策</h3>
 
 <div style="border:1px solid #eee;border-radius:8px;padding:16px;margin:10px 0;">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
         <span style="background:#dc2743;color:white;padding:2px 10px;border-radius:12px;font-size:0.8em;">最優先</span>
-        <strong style="font-size:1.05em;">施策1: エンゲージメント率の低下を改善する</strong>
+        <strong style="font-size:1.05em;">施策1: カルーセル型「制作実績ポートフォリオ」を週2回投稿する</strong>
     </div>
-    <p style="margin:0;color:#555;line-height:1.6;">エンゲージメント率が4.17%→0.00%へ-4.17ポイント低下（-100.0%）。期間Aで高パフォーマンスだったコンテンツタイプや投稿タイミングを見直し、成功パターンを再現する。</p>
+    <p style="margin:0;color:#555;line-height:1.6;">カルーセルの平均いいね59件はリールの26件の2.2倍、エンゲージメント率28.6%も1.9倍高い。しかし全投稿の17%しか占めていない。過去の制作実績（Web、チラシ、ロゴ、名刺）をカルーセル5〜10枚で紹介し、1枚目にビフォーアフターまたは完成品の最も映える1枚を配置。キャプションに「課題→解決策→成果」のストーリーを記載。</p>
 </div>
 
 <div style="border:1px solid #eee;border-radius:8px;padding:16px;margin:10px 0;">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
         <span style="background:#e6683c;color:white;padding:2px 10px;border-radius:12px;font-size:0.8em;">高</span>
-        <strong style="font-size:1.05em;">施策2: VIDEOのパフォーマンス低下を分析・改善する</strong>
+        <strong style="font-size:1.05em;">施策2: 保存率を上げる「デザインTips」教育コンテンツを月4回投稿する</strong>
     </div>
-    <p style="margin:0;color:#555;line-height:1.6;">VIDEOのエンゲージメント率が5.00%→0.00%へ低下。コンテンツの質、投稿タイミング、キャプションの書き方を見直す。</p>
-</div>
-
-<div style="border:1px solid #eee;border-radius:8px;padding:16px;margin:10px 0;">
-    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
-        <span style="background:#e6683c;color:white;padding:2px 10px;border-radius:12px;font-size:0.8em;">高</span>
-        <strong style="font-size:1.05em;">施策3: パフォーマンスが低下したカテゴリのテコ入れ</strong>
-    </div>
-    <p style="margin:0;color:#555;line-height:1.6;">低下が見られたカテゴリ: 「イベント告知」(-6.1pt)、「制作実績」(-3.8pt)。フォーマット刷新（カルーセル化、動画追加）やキャプションの改善でエンゲージメントの回復を図る。</p>
+    <p style="margin:0;color:#555;line-height:1.6;">全投稿の69%で保存数が0件。保存率が低いとアルゴリズム評価が下がる。「配色で印象が変わる3つのコツ」「チラシNGデザイン5選」等のカルーセル投稿を作成し、1枚目に「保存して見返してください」と明記。ターゲットは地方の老舗旅館（客室15室程度）の若女将、またはフロントリーダー（30-45歳）（見込み客層）。</p>
 </div>
 
 <div style="border:1px solid #eee;border-radius:8px;padding:16px;margin:10px 0;">
     <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
         <span style="background:#f09433;color:white;padding:2px 10px;border-radius:12px;font-size:0.8em;">中</span>
-        <strong style="font-size:1.05em;">施策4: 保存数の回復に向けた教育コンテンツの投稿</strong>
+        <strong style="font-size:1.05em;">施策3: クライアント撮影動画に「成果ストーリー」を追加する</strong>
     </div>
-    <p style="margin:0;color:#555;line-height:1.6;">平均保存数が0.3→0.0へ低下。「保存して見返す価値がある」Tips系・チェックリスト系コンテンツを増やし、キャプションで保存を促すCTAを追加する。</p>
+    <p style="margin:0;color:#555;line-height:1.6;">リーチ500以上でER5%未満の投稿が3件ある。映像は広くリーチするが反応が止まっている。動画冒頭3秒に成果テロップを入れ、キャプションに「クライアント様の声」を記載。動画末尾にCTA（「あなたのお店もこんな映像で集客しませんか？」）を追加。コラボ投稿機能でクライアント側アカウントとの共同投稿も活用する。</p>
+</div>
+
+<div style="border:1px solid #eee;border-radius:8px;padding:16px;margin:10px 0;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <span style="background:#f09433;color:white;padding:2px 10px;border-radius:12px;font-size:0.8em;">中</span>
+        <strong style="font-size:1.05em;">施策4: 投稿頻度を週3回に固定し投稿カレンダーを運用する</strong>
+    </div>
+    <p style="margin:0;color:#555;line-height:1.6;">投稿頻度が不均一（月0〜7件のばらつき）。月曜の投稿が最も効果的なので月曜を軸に週3回の固定スケジュールを組む。カテゴリバランス：制作実績40%、撮影風景25%、教育Tips25%、その他10%。1ヶ月分のコンテンツを事前に制作・スケジュール設定する。</p>
+</div>
+
+<div style="border:1px solid #eee;border-radius:8px;padding:16px;margin:10px 0;">
+    <div style="display:flex;align-items:center;gap:10px;margin-bottom:8px;">
+        <span style="background:#e6683c;color:white;padding:2px 10px;border-radius:12px;font-size:0.8em;">高</span>
+        <strong style="font-size:1.05em;">施策5: ペルソナの課題に刺さるコンテンツを月2回投稿する</strong>
+    </div>
+    <p style="margin:0;color:#555;line-height:1.6;">ターゲット（地方の老舗旅館（客室15室程度）の若女将、またはフロントリーダー（30-45歳））の主な悩み: 「SNS発信をしなきゃと思いつつ、時間がな」、「宿のこだわり（料理・空間）には自信がある」、「他館のキラキラした投稿を見て焦りを感じる」。これらの課題に対して制作実績で『宿の想いを形にする力』をアピール。旅館・宿泊業の事例を見せ、同業者に『うちもこうなりたい』と思わせるを意識したコンテンツを制作し、「自分のことだ」と感じてもらえる具体的なビフォーアフター事例やお客様の声を活用する。</p>
 </div>
 </div>
 
+<!-- 推奨アクション -->
+<div class="card" id="section-recommendations">
+    <h2>推奨アクション</h2>
+    <div class="recommendations">CAROUSEL_ALBUMタイプの投稿がエンゲージメント率28.59%で最も効果的です。このタイプのコンテンツを増やすことを検討してください。</div>
+<div class="recommendations">月曜日の投稿が最も高いエンゲージメントを獲得しています。</div>
+<div class="recommendations">9時頃の投稿が効果的です。</div>
+</div>
+
+<!-- 用語集 -->
 <div class="card" id="section-glossary">
     <h2>用語集</h2>
     <p style="color:#8e8e8e;font-size:0.9em;">レポート内で使われている専門用語の解説です。</p>
@@ -379,51 +571,75 @@
     <p>ストーリーで「前へ」タップした割合。高い場合はユーザーがもう一度見たいと思うほど興味深いコンテンツであることを示します。</p></details>
 </div>
 
-<div class="card">
-    <h2>エンゲージメント率の推移（期間比較）</h2>
-    <p style="color:#8e8e8e;font-size:0.9em;">2つの期間の投稿をエンゲージメント率で時系列プロット。</p>
-    <div class="chart-container" id="chart-timeline-compare"></div>
-</div>
-
 <script>
 
-Plotly.newPlot('chart-kpi-bar', [
-    { x: ["平均エンゲージメント率", "平均いいね", "平均リーチ", "平均コメント", "平均保存数"], y: [4.17, 17.17, 247.0, 0.0, 0.33], name: '2025年7月〜9月', type: 'bar', marker: { color: '#e6683c' } },
-    { x: ["平均エンゲージメント率", "平均いいね", "平均リーチ", "平均コメント", "平均保存数"], y: [0.0, 0.0, 0.0, 0.0, 0.0], name: '2025年11月〜2026年1月', type: 'bar', marker: { color: '#5856d6' } }
-], {
-    title: '主要指標の比較',
-    barmode: 'group',
-    yaxis: { title: '値' }
+Plotly.newPlot('chart-media-type', [{
+    y: ["CAROUSEL_ALBUM", "VIDEO"],
+    x: [28.59, 15.45],
+    text: [5, 25],
+    hovertemplate: '%{y}<br>エンゲージメント率: %{x:.2f}%<br>投稿数: %{text}件<extra></extra>',
+    type: 'bar',
+    orientation: 'h',
+    marker: { color: ['#f09433','#e6683c','#dc2743','#cc2366','#bc1888'].slice(0, 2) }
+}], {
+    title: 'メディアタイプ別エンゲージメント率',
+    xaxis: { title: 'エンゲージメント率 (%)' },
+    yaxis: { automargin: true },
+    margin: { l: 120 }
 }, {responsive: true});
 
 
-Plotly.newPlot('chart-media-compare', [
-    { x: ["CAROUSEL_ALBUM", "VIDEO"], y: [0.0, 5.0], name: '2025年7月〜9月', type: 'bar', marker: { color: '#e6683c' } },
-    { x: ["CAROUSEL_ALBUM", "VIDEO"], y: [0.0, 0.0], name: '2025年11月〜2026年1月', type: 'bar', marker: { color: '#5856d6' } }
-], {
-    title: 'メディアタイプ別エンゲージメント率の比較',
-    barmode: 'group',
+Plotly.newPlot('chart-heatmap', [{
+    z: [[null, null, null, null, null, null, null, null, null, null, 39.03, null, 5.67, 10.67, null, null, null, null, null, null, null, null, null, null], [null, null, null, 7.55, null, null, null, null, null, null, 34.01, 0.0, null, 6.14, null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null, 19.01, 12.5, 24.0, null, null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null, 8.07, null, null, null, null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, 8.62, 44.17, 5.49, 8.1, 5.85, 10.39, null, null, null, null, null, null, null, null, null, 5.77], [null, null, null, null, null, null, null, null, null, null, 4.59, null, null, null, null, null, null, null, null, null, null, null, null, null], [null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null]],
+    x: ["0\u6642", "1\u6642", "2\u6642", "3\u6642", "4\u6642", "5\u6642", "6\u6642", "7\u6642", "8\u6642", "9\u6642", "10\u6642", "11\u6642", "12\u6642", "13\u6642", "14\u6642", "15\u6642", "16\u6642", "17\u6642", "18\u6642", "19\u6642", "20\u6642", "21\u6642", "22\u6642", "23\u6642"],
+    y: ["\u6708\u66dc", "\u706b\u66dc", "\u6c34\u66dc", "\u6728\u66dc", "\u91d1\u66dc", "\u571f\u66dc", "\u65e5\u66dc"],
+    type: 'heatmap',
+    colorscale: [[0,'#fafafa'],[0.5,'#f09433'],[1,'#dc2743']],
+    hovertemplate: '%{y} %{x}<br>エンゲージメント率: %{z:.2f}%<extra></extra>',
+    connectgaps: false
+}], {
+    title: '投稿時間帯別エンゲージメント率',
+    xaxis: { title: '時間帯', dtick: 1 },
+    yaxis: { automargin: true },
+    margin: { l: 80 }
+}, {responsive: true});
+
+
+Plotly.newPlot('chart-scatter', [{
+    x: [469, 245, 292, 286, 298, 0, 362, 208, 290, 1155, 530, 337, 286, 225, 284, 342, 263, 710, 324, 406, 286, 483, 224, 1328, 422, 88, 203, 35, 41, 99],
+    y: [10.874200426439232, 2.857142857142857, 4.794520547945205, 4.895104895104895, 6.375838926174497, 0.0, 6.077348066298343, 5.769230769230769, 8.620689655172415, 4.588744588744588, 7.547169811320755, 10.385756676557865, 7.3426573426573425, 10.666666666666668, 8.098591549295776, 5.847953216374268, 7.604562737642586, 4.929577464788732, 7.4074074074074066, 3.9408866995073892, 21.678321678321677, 8.074534161490684, 12.5, 2.9367469879518073, 14.218009478672986, 39.77272727272727, 40.39408866995074, 94.28571428571428, 100.0, 66.66666666666666],
+    text: ["✨📸第2回 #ゆふいんの食文化 フォトコンテスト 開催！\n\n...", "_\n\n私は2019年にWeb制作を学び始め、2020年にアド...", "_\n\n転職からデザイン業界へ飛び込んで、あっという間に10年...", "_\n\n私は広告デザインの舞台裏側の人間。\n\n舞台裏は実に泥臭...", "_\n\nデザイン業界にどっぷりハマって20年。\n未だに「やりた...", "_\n\nこんにちは！福岡のデザイン事務所\nad factory...", "榎屋茶房のご紹介✨\n\n🎉現在、榎屋旅館では超お得なキャンペー...", "▶︎撮影風景\n\n写真アカウント\n@a.tarou.photo...", "▶︎撮影風景\n\n写真アカウント\n@a.tarou.photo...", "Barjunneバルジュン様 撮影\n\n[所在地]\n大分県大分...", "▶︎バルジュン_Barjunne様♪\n\n[所在地]\n大分県大...", "▶︎モデルさんとスタイリストさんのアカウントはこちらから！\n...", "▶︎ハーツでうちわ作りませんか？\n\nこんばんは！\n夏本番のこ...", "▶︎撮影風景\n\nこんばんは！\n今回は、屋内での物撮りの様子を...", "▶︎撮影風景\n\nこんばんは！\n撮影風景のご紹介です♪\n\n今年...", "▶︎撮影風景\n\nこんばんは！\n本日は榎屋茶房さんでの撮影風景...", "▶︎撮影風景\n\nこんばんは！\n本日も昨日に引き続き撮影風景の...", "▶︎VISIT九州様撮影風景\n\nこんばんは！\nVISIT九州...", "▶︎事務所紹介♪\n\nお久しぶりです！\n長らくインスタグラム ...", "▶︎ デザイナーのお休みはおしゃれなの？\n\nこんばんは！\nデ...", "▶PSJ様：春チラシ\n\nこんばんは！\n今回は、以前弊社で制作...", "▶︎Beauty&Healing room Ajuga様：撮...", "▶VISIT九州様×旅くらす様(＠tabi-kuras)：ツ...", "▶VISIT九州様×旅くらす様(＠tabi-kuras)：撮...", "▶榎屋旅館様(＠enokiya_ryokan)：法被\n\nこん...", "▶︎ デザイナーって実は地味 !?\n\nデザイナーってなんだか...", "▶旅くらす様(＠tabi_kuras)：POP\n\nこんばんは...", "▶VISIT九州様：撮影\n\nこんばんは！\n今回は「VISIT...", "▶撮影・編集全てお任せ！\n\nハーツでは、ドローンやGoPro...", "▶️旅くらす様(@tabi_kuras )：パンフレット\n\n..."],
+    customdata: ["VIDEO", "VIDEO", "VIDEO", "VIDEO", "VIDEO", "CAROUSEL_ALBUM", "VIDEO", "VIDEO", "VIDEO", "VIDEO", "VIDEO", "VIDEO", "VIDEO", "VIDEO", "VIDEO", "VIDEO", "VIDEO", "VIDEO", "VIDEO", "VIDEO", "CAROUSEL_ALBUM", "VIDEO", "VIDEO", "VIDEO", "CAROUSEL_ALBUM", "VIDEO", "CAROUSEL_ALBUM", "VIDEO", "VIDEO", "CAROUSEL_ALBUM"],
+    mode: 'markers',
+    marker: {
+        size: [51, 7, 14, 14, 19, 29, 22, 12, 25, 53, 40, 35, 21, 24, 23, 20, 20, 35, 24, 16, 62, 39, 28, 39, 60, 35, 82, 33, 41, 66],
+        sizemode: 'area',
+        sizeref: Math.max(...[51, 7, 14, 14, 19, 29, 22, 12, 25, 53, 40, 35, 21, 24, 23, 20, 20, 35, 24, 16, 62, 39, 28, 39, 60, 35, 82, 33, 41, 66]) / 1500,
+        sizemin: 5,
+        color: [10.874200426439232, 2.857142857142857, 4.794520547945205, 4.895104895104895, 6.375838926174497, 0.0, 6.077348066298343, 5.769230769230769, 8.620689655172415, 4.588744588744588, 7.547169811320755, 10.385756676557865, 7.3426573426573425, 10.666666666666668, 8.098591549295776, 5.847953216374268, 7.604562737642586, 4.929577464788732, 7.4074074074074066, 3.9408866995073892, 21.678321678321677, 8.074534161490684, 12.5, 2.9367469879518073, 14.218009478672986, 39.77272727272727, 40.39408866995074, 94.28571428571428, 100.0, 66.66666666666666],
+        colorscale: [[0,'#f09433'],[1,'#bc1888']],
+        showscale: true,
+        colorbar: { title: 'エンゲージメント率%' }
+    },
+    hovertemplate: '%{text}<br>タイプ: %{customdata}<br>リーチ: %{x:,}<br>エンゲージメント率: %{y:.2f}%<extra></extra>',
+    type: 'scatter'
+}], {
+    title: 'リーチ vs エンゲージメント率（バブルサイズ = 総エンゲージメント数）',
+    xaxis: { title: 'リーチ数' },
     yaxis: { title: 'エンゲージメント率 (%)' }
 }, {responsive: true});
 
 
-Plotly.newPlot('chart-timeline-compare', [
-    {
-        x: ["2025-07-11", "2025-08-05", "2025-08-06", "2025-08-08", "2025-08-12", "2025-08-18"], y: [6.094182825484765, 0.0, 6.375838926174497, 4.895104895104895, 4.794520547945205, 2.857142857142857],
-        name: '2025年7月〜9月', type: 'scatter', mode: 'lines+markers',
-        line: { color: '#e6683c', width: 2 },
-        marker: { size: 6, color: '#e6683c' },
-        hovertemplate: '%{x}<br>エンゲージメント率: %{y:.2f}%<extra>2025年7月〜9月</extra>'
-    },
-    {
-        x: [], y: [],
-        name: '2025年11月〜2026年1月', type: 'scatter', mode: 'lines+markers',
-        line: { color: '#5856d6', width: 2 },
-        marker: { size: 6, color: '#5856d6' },
-        hovertemplate: '%{x}<br>エンゲージメント率: %{y:.2f}%<extra>2025年11月〜2026年1月</extra>'
-    }
-], {
-    title: 'エンゲージメント率の推移（期間比較）',
+Plotly.newPlot('chart-timeline', [{
+    x: ["2024-02-16", "2024-02-19", "2024-02-20", "2024-02-21", "2024-02-28", "2024-03-18", "2024-03-19", "2024-03-20", "2024-03-21", "2024-03-22", "2024-04-01", "2024-08-05", "2024-08-06", "2024-08-07", "2024-08-09", "2024-08-23", "2024-08-26", "2024-08-27", "2024-09-27", "2024-10-01", "2024-10-05", "2025-06-20", "2025-06-20", "2025-07-11", "2025-08-05", "2025-08-06", "2025-08-08", "2025-08-12", "2025-08-18", "2025-10-01"],
+    y: [66.66666666666666, 100.0, 94.28571428571428, 40.39408866995074, 39.77272727272727, 14.218009478672986, 2.9367469879518073, 12.5, 8.074534161490684, 21.678321678321677, 3.9408866995073892, 7.4074074074074066, 4.929577464788732, 7.604562737642586, 5.847953216374268, 8.098591549295776, 10.666666666666668, 7.3426573426573425, 10.385756676557865, 7.547169811320755, 4.588744588744588, 8.620689655172415, 5.769230769230769, 6.077348066298343, 0.0, 6.375838926174497, 4.895104895104895, 4.794520547945205, 2.857142857142857, 10.874200426439232],
+    type: 'scatter',
+    mode: 'lines+markers',
+    line: { color: '#dc2743', width: 2 },
+    marker: { size: 6, color: '#dc2743' },
+    hovertemplate: '%{x}<br>エンゲージメント率: %{y:.2f}%<extra></extra>'
+}], {
+    title: 'エンゲージメント率の推移',
     xaxis: { title: '投稿日' },
     yaxis: { title: 'エンゲージメント率 (%)' }
 }, {responsive: true});
