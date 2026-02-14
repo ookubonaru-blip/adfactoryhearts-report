@@ -249,7 +249,7 @@
 
 <div class="header">
     <h1>Instagram インサイトレポート</h1>
-    <p class="timestamp">生成日時: 2026-02-15T00:27:26.283033</p>
+    <p class="timestamp">生成日時: 2026-02-15T00:32:52.946260</p>
 </div>
 
 <!-- アカウント概要 -->
@@ -650,7 +650,7 @@ Plotly.newPlot('chart-media-type', [{
     xaxis: { title: 'エンゲージメント率 (%)' },
     yaxis: { automargin: true },
     margin: { l: 120 }
-}, {responsive: true});
+}, {responsive: true, scrollZoom: false, displayModeBar: false, staticPlot: false});
 
 
 Plotly.newPlot('chart-heatmap', [{
@@ -666,7 +666,7 @@ Plotly.newPlot('chart-heatmap', [{
     xaxis: { title: '時間帯', dtick: 1 },
     yaxis: { automargin: true },
     margin: { l: 80 }
-}, {responsive: true});
+}, {responsive: true, scrollZoom: false, displayModeBar: false, staticPlot: false});
 
 
 Plotly.newPlot('chart-scatter', [{
@@ -691,7 +691,7 @@ Plotly.newPlot('chart-scatter', [{
     title: 'リーチ vs エンゲージメント率（バブルサイズ = 総エンゲージメント数）',
     xaxis: { title: 'リーチ数' },
     yaxis: { title: 'エンゲージメント率 (%)' }
-}, {responsive: true});
+}, {responsive: true, scrollZoom: false, displayModeBar: false, staticPlot: false});
 
 
 Plotly.newPlot('chart-timeline', [{
@@ -706,8 +706,14 @@ Plotly.newPlot('chart-timeline', [{
     title: 'エンゲージメント率の推移',
     xaxis: { title: '投稿日' },
     yaxis: { title: 'エンゲージメント率 (%)' }
-}, {responsive: true});
+}, {responsive: true, scrollZoom: false, displayModeBar: false, staticPlot: false});
 
+// 全チャートのドラッグ操作を無効化
+document.querySelectorAll('.chart-container').forEach(function(el) {
+    if (el.id) {
+        Plotly.relayout(el.id, { dragmode: false });
+    }
+});
 </script>
 <script src="https://unpkg.com/scroll-hint@1.1.10/js/scroll-hint.min.js"></script>
 <script>
